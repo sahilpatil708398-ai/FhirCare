@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FHIRCare — Secure Patient Medical Record Exchange</title>
+<link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+
+
+<!-- ======================= PUBLIC HOME (landing) ======================= -->
+<div id="home-screen">
+  <div id="scroll-progress"></div>
+  <header class="site-header" id="home-header">
+    <a class="brand" href="#top" data-scroll="top"><span class="logo">✚</span><span>FHIR<span>Care</span></span></a>
+    <nav class="site-nav" id="home-nav">
+      <a href="#features" data-scroll="features">Features</a>
+      <a href="#how" data-scroll="how">How it works</a>
+      <a href="#fhir" data-scroll="fhir">FHIR Live</a>
+      <a href="#roles" data-scroll="roles">Roles</a>
+      <a href="#security" data-scroll="security">Security</a>
+      <a href="#faq" data-scroll="faq">FAQ</a>
+    </nav>
+    <div class="site-actions">
+      <button class="icon-btn" id="theme-toggle" title="Toggle dark mode" aria-label="Toggle theme">🌙</button>
+      <button class="ghost" data-open-auth="login">Sign in</button>
+      <button class="primary" data-open-auth="register">Get started</button>
+      <button class="icon-btn menu-btn" id="menu-toggle" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="pill reveal">● HL7 FHIR R5 · Consent-first exchange</span>
+          <h1 class="reveal">Your health records,<br/><span class="grad" id="typed-word">secure</span><span class="caret">|</span></h1>
+          <p class="lead reveal">FHIRCare lets patients own their medical data, doctors request access with a reason, and every record becomes interoperable FHIR JSON — with a tamper-evident audit trail behind each action.</p>
+          <div class="hero-cta reveal">
+            <button class="primary big" data-open-auth="register">Create free account →</button>
+            <button class="ghost big" data-open-auth="login">Try demo login</button>
+          </div>
+          <div class="trust reveal"><span>✔ BCrypt hashing</span><span>✔ Server-side consent checks</span><span>✔ Full audit log</span></div>
+        </div>
+        <div class="hero-visual reveal">
+          <div class="hero-img-card" id="tilt-card">
+            <img src="images/data-safe.jpg" alt="Keep your data safe - shield and padlock on a medical folder"/>
+            <div class="float-chip c1">🔒 Consent granted</div>
+            <div class="float-chip c2">📄 FHIR Bundle</div>
+            <div class="float-chip c3">🧾 Audit logged</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE STATS -->
+    <section class="stats-band">
+      <div class="stats-grid">
+        <div class="hstat"><b data-count="7">0</b><span>FHIR resource types</span></div>
+        <div class="hstat"><b data-count="6">0</b><span>Data stores (DFD D1–D6)</span></div>
+        <div class="hstat"><b data-count="3">0</b><span>Role-based dashboards</span></div>
+        <div class="hstat"><b id="live-stat" data-count="0" data-suffix="">0</b><span id="live-stat-label">Records live in system</span></div>
+      </div>
+    </section>
+
+    <!-- DOCTOR SHOWCASE -->
+    <section id="care" class="section">
+      <div class="showcase">
+        <div class="showcase-img reveal">
+          <img src="images/doctor-care.jpg" alt="Doctor using a laptop with connected healthcare icons" loading="lazy"/>
+          <div class="showcase-chip s1">🩺 Doctor-verified records</div>
+          <div class="showcase-chip s2">🔒 Patient consent first</div>
+        </div>
+        <div class="showcase-copy reveal">
+          <p class="eyebrow">CONNECTED CARE</p>
+          <h2>Doctors get the right data, patients keep the control</h2>
+          <p>From prescriptions to lab reports, every record is shared only after the patient approves, and every access is written to an audit trail.</p>
+          <ul class="tick-list">
+            <li>Request access with a clear medical reason</li>
+            <li>Patient approves or rejects in one tap</li>
+            <li>Records exported as interoperable FHIR JSON</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section id="video" class="section alt">
+      <div class="sec-head reveal"><p class="eyebrow">SEE IT IN ACTION</p><h2>Watch how FHIRCare works</h2><p>A short walkthrough of the patient, doctor and admin experience.</p></div>
+      <div class="video-frame reveal">
+        <video controls preload="metadata" playsinline poster="images/doctor-care.jpg">
+          <source src="media/fhircare-demo.mp4" type="video/mp4" onerror="this.closest('.video-frame').classList.add('no-video')"/>
+        </video>
+        <div class="video-note"><b>Video coming soon</b><span>Place your HD file at <code>media/fhircare-demo.mp4</code></span></div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <div class="sec-head reveal"><p class="eyebrow">WHAT YOU GET</p><h2>Everything a secure record exchange needs</h2><p>Built directly from the project DFD — each feature maps to a real, working endpoint.</p></div>
+      <div class="feature-grid">
+        <article class="fcard reveal"><span class="ficon">🛡️</span><h3>Consent-gated access</h3><p>Doctors can only read or add records after the patient approves. Enforced on the server, not just hidden in the UI.</p></article>
+        <article class="fcard reveal"><span class="ficon">🧬</span><h3>FHIR R5 bundles</h3><p>Records are mapped to Condition, Observation, MedicationRequest, Procedure, DiagnosticReport, Immunization and AllergyIntolerance.</p></article>
+        <article class="fcard reveal"><span class="ficon">🧾</span><h3>Complete audit trail</h3><p>Logins, requests, consent decisions, record changes and FHIR generation are all written to audit logs.</p></article>
+        <article class="fcard reveal"><span class="ficon">🔐</span><h3>One-time profile lock</h3><p>Patient personal info locks after first submission; a doctor can authorize one controlled unlock.</p></article>
+        <article class="fcard reveal"><span class="ficon">📑</span><h3>PDF health reports</h3><p>Download a consent-checked PDF summary of a patient's records in one click.</p></article>
+        <article class="fcard reveal"><span class="ficon">📊</span><h3>Admin analytics</h3><p>Live stats, data distribution, user lock/activate controls and full audit log viewer.</p></article>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section alt">
+      <div class="sec-head reveal"><p class="eyebrow">WORKFLOW</p><h2>From request to FHIR in four steps</h2><p>Click a step to see what happens behind the scenes.</p></div>
+      <div class="how-wrap">
+        <div class="how-steps" id="how-steps"></div>
+        <div class="how-panel card" id="how-panel"></div>
+      </div>
+    </section>
+
+    <!-- FHIR PLAYGROUND -->
+    <section id="fhir" class="section">
+      <div class="sec-head reveal"><p class="eyebrow">INTERACTIVE</p><h2>See how a record becomes FHIR</h2><p>Pick a record type and edit the values — the FHIR JSON is generated live in your browser.</p></div>
+      <div class="playground reveal">
+        <div class="pg-form card">
+          <label>Record type</label>
+          <select id="pg-type">
+            <option value="CONDITION">Condition</option>
+            <option value="OBSERVATION">Observation</option>
+            <option value="MEDICATION">Medication</option>
+            <option value="ALLERGY">Allergy</option>
+            <option value="IMMUNIZATION">Immunization</option>
+            <option value="PROCEDURE">Procedure</option>
+            <option value="REPORT">Report</option>
+          </select>
+          <label>Title / name</label>
+          <input id="pg-title" value="Type 2 Diabetes" />
+          <label>Details</label>
+          <input id="pg-detail" value="Diagnosed during annual checkup" />
+          <label>Patient code</label>
+          <input id="pg-patient" value="PAT-1001" />
+          <div class="pg-tags" id="pg-tags"></div>
+        </div>
+        <div class="pg-out">
+          <div class="pg-bar"><span id="pg-res-type">Condition</span><button class="text-btn" id="pg-copy">Copy JSON ⧉</button></div>
+          <pre id="pg-json"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROLES -->
+    <section id="roles" class="section alt">
+      <div class="sec-head reveal"><p class="eyebrow">THREE DASHBOARDS</p><h2>One platform, three experiences</h2></div>
+      <div class="role-tabs reveal" id="role-tabs">
+        <button class="active" data-role="patient">🧑 Patient</button>
+        <button data-role="doctor">🩺 Doctor</button>
+        <button data-role="admin">⚙️ Admin</button>
+      </div>
+      <div class="role-card card reveal" id="role-card"></div>
+    </section>
+
+    <!-- SECURITY -->
+    <section id="security" class="section">
+      <div class="sec-head reveal"><p class="eyebrow">SECURITY & COMPLIANCE</p><h2>Designed around trust</h2></div>
+      <div class="sec-grid">
+        <div class="sec-list reveal">
+          <div class="sec-item"><b>BCrypt password hashing</b><span>No plain-text credentials ever stored.</span></div>
+          <div class="sec-item"><b>Role-based authorization</b><span>Patient, Doctor and Admin capabilities are separated.</span></div>
+          <div class="sec-item"><b>Consent enforcement</b><span>Every record read and write checks a granted consent.</span></div>
+          <div class="sec-item"><b>Immutable-style audit</b><span>Every sensitive action is time-stamped and attributable.</span></div>
+        </div>
+        <div class="dfd reveal">
+          <p class="eyebrow">DATA STORES</p>
+          <div class="dfd-grid" id="dfd-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section alt">
+      <div class="sec-head reveal"><p class="eyebrow">FAQ</p><h2>Common questions</h2></div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band reveal">
+      <h2>Ready to explore FHIRCare?</h2>
+      <p>Use the demo accounts or create your own Patient or Doctor profile in seconds.</p>
+      <div class="hero-cta" style="justify-content:center">
+        <button class="amber-btn big" data-open-auth="register">Create account</button>
+        <button class="ghost big on-dark" data-open-auth="login">Sign in</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ======================= AUTH SCREEN (small, single-card login) ======================= -->
+<div id="auth-screen" class="auth-wrap-small hidden">
+  <div class="auth-card-small">
+    <button class="text-btn back-home" id="auth-back">← Back to home</button>
+    <div class="brand center"><span class="logo">✚</span><span>FHIR<span>Care</span></span></div>
+    <p class="small-sub">Secure, consent-first patient record exchange.</p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="login">Sign in</button>
+      <button class="tab" data-tab="register">Create account</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <label>Username</label>
+      <input required id="login-username" placeholder="e.g. rahul" autocomplete="username" />
+      <label>Password</label>
+      <input required id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" />
+      <button class="primary full" type="submit">Sign in</button>
+      <p class="error" id="login-error"></p>
+      <details class="demo-details">
+        <summary>Demo accounts</summary>
+        <div class="demo-box">
+          <div><span>Patient</span><code>rahul / patient123</code></div>
+          <div><span>Doctor (has consent)</span><code>dranaya / doctor123</code></div>
+          <div><span>Doctor (requesting)</span><code>drvikram / doctor123</code></div>
+          <div><span>Admin</span><code>admin / admin123</code></div>
+        </div>
+      </details>
+    </form>
+
+    <form id="register-form" class="auth-form hidden">
+      <label>I am a</label>
+      <select id="reg-role">
+        <option value="PATIENT">Patient</option>
+        <option value="DOCTOR">Doctor</option>
+      </select>
+      <label>Full name</label>
+      <input required id="reg-fullname" placeholder="Jane Doe" />
+      <label>Username</label>
+      <input required id="reg-username" placeholder="janedoe" />
+      <label>Email</label>
+      <input required id="reg-email" type="email" placeholder="jane@example.com" />
+      <label>Password</label>
+      <input required id="reg-password" type="password" placeholder="At least 6 characters" />
+      <div id="reg-patient-fields">
+        <label>Gender</label>
+        <select id="reg-gender"><option value="female">Female</option><option value="male">Male</option><option value="other">Other</option></select>
+        <label>Date of birth</label>
+        <input id="reg-birthdate" type="date" />
+      </div>
+      <div id="reg-doctor-fields" class="hidden">
+        <label>Specialization</label>
+        <input id="reg-specialization" placeholder="e.g. Cardiologist" />
+      </div>
+      <button class="primary full" type="submit">Create account</button>
+      <p class="error" id="register-error"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ======================= APP SHELL ======================= -->
+<div id="app-shell" class="hidden">
+  <header class="topbar">
+    <a class="brand" href="#" id="app-brand"><span class="logo">✚</span><span>FHIR<span>Care</span></span><em class="role-chip" id="role-chip">—</em></a>
+    <nav id="role-nav"></nav>
+    <div class="profile">
+      <button class="icon-btn" id="theme-toggle-app" title="Toggle dark mode" aria-label="Toggle theme">🌙</button>
+      <span class="avatar" id="nav-avatar">--</span>
+      <div><span id="nav-name">—</span><small id="nav-role">—</small></div>
+      <button id="logout-btn" class="text-btn" title="Sign out">Sign out ↩</button>
+    </div>
+  </header>
+
+  <main id="view-root" class="view-root"></main>
+
+</div>
+
+<!-- shared site footer is injected here by JS so home, app and admin all use the same one -->
+<footer id="site-footer" class="site-footer"></footer>
+<button id="back-top" class="back-top hidden" aria-label="Back to top">↑</button>
+
+<!-- ======================= FHIR JSON MODAL ======================= -->
+<div id="fhir-modal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head"><h3>FHIR R5 Bundle (JSON)</h3><button id="modal-close" class="text-btn">Close ✕</button></div>
+    <pre id="fhir-json"></pre>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/js/home.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
