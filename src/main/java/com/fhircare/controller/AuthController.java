@@ -46,6 +46,9 @@ public class AuthController {
         if (req.getUsername() == null || req.getPassword() == null || req.getRole() == null) {
             return ResponseEntity.badRequest().body(Map.of("error", "username, password and role are required"));
         }
+        if (req.getEmail() == null || req.getEmail().isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "email is required"));
+        }
         if (userRepository.existsByUsername(req.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Username already taken"));
         }
@@ -78,7 +81,7 @@ public class AuthController {
             Patient p = new Patient();
             p.setUserId(user.getUserId());
             p.setFhirResourceId("Patient-" + UUID.randomUUID());
-            p.setPatientCode("PAT-" + (1000 + patientRepository.count() + 1));
+            p.setPatientCode(nextPatientCode());
             String[] names = splitName(req.getFullName());
             p.setFirstName(names[0]);
             p.setLastName(names[1]);
@@ -94,7 +97,7 @@ public class AuthController {
             Doctor d = new Doctor();
             d.setUserId(user.getUserId());
             d.setFhirResourceId("Practitioner-" + UUID.randomUUID());
-            d.setDoctorCode("DOC-" + (2000 + doctorRepository.count() + 1));
+            d.setDoctorCode(nextDoctorCode());
             String[] names = splitName(req.getFullName());
             d.setFirstName(names[0]);
             d.setLastName(names[1]);
@@ -140,6 +143,19 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthResponse(user.getUserId(), user.getUsername(), user.getFullName(),
                 user.getRole().name(), profileId, profileCode));
+    }
+
+
+    private String nextPatientCode() {
+        long n = 1000 + patientRepository.count() + 1;
+        while (patientRepository.findByPatientCode("PAT-" + n).isPresent()) n++;
+        return "PAT-" + n;
+    }
+
+    private String nextDoctorCode() {
+        long n = 2000 + doctorRepository.count() + 1;
+        while (doctorRepository.findByDoctorCode("DOC-" + n).isPresent()) n++;
+        return "DOC-" + n;
     }
 
     private String[] splitName(String fullName) {

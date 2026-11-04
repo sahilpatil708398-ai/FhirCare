@@ -63,7 +63,7 @@ public class PatientController {
 
         Patient p = new Patient();
         p.setFhirResourceId("Patient-" + UUID.randomUUID());
-        p.setPatientCode("PAT-" + (1000 + repo.count() + 1));
+        p.setPatientCode(nextPatientCode());
         p.setFirstName(body.firstName().trim());
         p.setLastName(body.lastName().trim());
         p.setGender(body.gender());
@@ -169,5 +169,16 @@ public class PatientController {
         if (!repo.existsById(id)) return ResponseEntity.notFound().build();
         repo.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    /** Next free PAT-xxxx code (count()+1 breaks when codes have gaps, e.g. seeded data). */
+    private String nextPatientCode() {
+        long n = 1000 + repo.count() + 1;
+        String code = "PAT-" + n;
+        while (repo.findByPatientCode(code).isPresent()) {
+            n++;
+            code = "PAT-" + n;
+        }
+        return code;
     }
 }

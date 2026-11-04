@@ -219,19 +219,21 @@
 
   VIEWS.PATIENT.profile = async () => {
     const p = await api("/patients/" + user.profileId); ctx.patient = p;
-    const f = (id, label, val, type) => `<label>${label}</label><input id="pf-${id}" type="${type || "text"}" value="${esc(val || "")}" />`;
+    const locked = !!p.profileSubmitted && !p.profileEditUnlocked;
+    const f = (id, label, val, type) => `<label>${label}</label><input id="pf-${id}" type="${type || "text"}" value="${esc(val || "")}" ${locked ? "disabled" : ""} />`;
     return `<h2>My profile</h2><div class="card"><form id="profile-form" class="auth-form">
       ${f("firstName", "First name", p.firstName)}${f("lastName", "Last name", p.lastName)}
       ${f("birthDate", "Date of birth", p.birthDate, "date")}${f("bloodGroup", "Blood group", p.bloodGroup)}
       ${f("phone", "Phone", p.phone)}${f("city", "City", p.city)}${f("state", "State", p.state)}${f("address", "Address", p.address)}
-      <button class="primary full" type="submit">Save profile</button><p class="error" id="profile-error"></p></form></div>`;
+      ${locked ? '<p class="empty">Your profile was saved and is now locked. A doctor must unlock one edit for you.</p>' : '<button class="primary full" type="submit">Save profile</button>'}
+      <p class="error" id="profile-error"></p></form></div>`;
   };
   AFTER["PATIENT:profile"] = root => {
     $("#profile-form", root).addEventListener("submit", async e => {
       e.preventDefault();
       const p = Object.assign({}, ctx.patient);
       ["firstName", "lastName", "birthDate", "bloodGroup", "phone", "city", "state", "address"].forEach(k => { p[k] = $("#pf-" + k).value || null; });
-      try { await api("/patients/" + p.patientId, { method: "PUT", body: p }); toast("Profile saved."); }
+      try { await api("/patients/" + p.patientId, { method: "PUT", body: p }); toast("Profile saved."); go("profile"); }
       catch (ex) { $("#profile-error").textContent = ex.message; }
     });
   };
